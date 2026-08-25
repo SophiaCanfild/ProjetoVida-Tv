@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B6E4F">
+  <title>Painel do Telão — Vida+</title>
+  <link rel="stylesheet" href="css/tv.css">
+</head>
+<body class="ctrl-body">
+
+  <!-- ===== LOGIN (código de acesso) ===== -->
+  <div class="ctrl-login" id="tela-login">
+    <div class="caixa">
+      <div class="logo-g">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>
+      </div>
+      <h2>Painel do Telão</h2>
+      <p class="suave" style="font-size:0.9rem; color:#5B6F68;">Acesso da equipe da unidade</p>
+      <input id="codigo" type="password" inputmode="numeric" placeholder="••••" maxlength="4">
+      <div class="erro" id="erro-login"></div>
+      <button class="btn-login" id="btn-login">Entrar</button>
+      <div class="dica">Código demo: <b>1234</b> (configurável no config.js)</div>
+      <button id="btn-voltar-tv" style="margin-top:14px; background:none; border:none; color:#5B6F68; cursor:pointer; font-size:0.82rem; font-family:inherit;">← Voltar para a TV</button>
+    </div>
+  </div>
+
+  <!-- ===== PAINEL ===== -->
+  <div id="tela-painel" style="display:none;">
+    <div class="ctrl-topo">
+      <h1>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:26px; height:26px;"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>
+        Painel do Telão — <span id="ctrl-unidade">Hospital Vida+</span>
+      </h1>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-sair-ctrl" id="btn-ver-tv">🖥️ Ver TV</button>
+        <button class="btn-sair-ctrl" id="btn-sair">Sair</button>
+      </div>
+    </div>
+
+    <div class="ctrl-conteudo">
+      <div class="banner-demo-ctrl" id="banner-demo">
+        <div>
+          <b>🎬 MODO DEMONSTRAÇÃO</b>
+          <span style="font-size:0.82rem;">Sem banco conectado — os dados ficam no navegador (integrados com o app do paciente na mesma origem).</span>
+        </div>
+        <div class="botoes">
+          <button class="btn" id="btn-seed-fila">👥 Preencher fila demo</button>
+          <button class="btn" id="btn-limpar-fila">🧹 Limpar fila demo</button>
+          <button class="btn" id="btn-teste-triagem">🎬 Teste: chamada p/ triagem</button>
+          <button class="btn" id="btn-teste-consulta">🎬 Teste: chamada p/ consulta</button>
+        </div>
+      </div>
+
+      <!-- Cartões resumo -->
+      <div class="ctrl-cartoes">
+        <div class="ctrl-cartao">
+          <div class="c-rotulo">Na fila</div>
+          <div class="c-valor" id="c-fila">0</div>
+          <div class="c-info">aguardando atendimento</div>
+        </div>
+        <div class="ctrl-cartao">
+          <div class="c-rotulo">Última chamada</div>
+          <div class="c-valor" id="c-senha" style="font-size:1.3rem;">—</div>
+          <div class="c-info" id="c-info-ultima">—</div>
+        </div>
+        <div class="ctrl-cartao">
+          <div class="c-rotulo">Tipo atual</div>
+          <div class="c-valor" id="c-tipo" style="font-size:1rem;">Triagem</div>
+          <div class="c-info" id="c-tipo-info">recepção → triagem</div>
+        </div>
+      </div>
+
+      <div class="ctrl-grid">
+        <!-- Fila + chamar -->
+        <div class="ctrl-painel">
+          <h2>🕒 Fila de espera</h2>
+
+          <!-- Seletor do TIPO de chamada -->
+          <div style="display:flex; gap:8px; margin-bottom:14px;" id="sel-tipo">
+            <button data-tipo="triagem" class="tipo-btn ativo" style="flex:1;">🌡️ Triagem</button>
+            <button data-tipo="consulta" class="tipo-btn" style="flex:1;">👨‍⚕️ Consulta</button>
+          </div>
+
+          <!-- Opções para TRIAGEM: guichê -->
+          <div id="opcoes-triagem" style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <label style="font-size:0.85rem; font-weight:700; color:#5B6F68;">Guichê de triagem:</label>
+            <div style="display:flex; gap:6px;" id="sel-guiche"></div>
+          </div>
+
+          <!-- Opções para CONSULTA: consultório + médico -->
+          <div id="opcoes-consulta" style="display:none; margin-bottom:12px;">
+            <label style="font-size:0.85rem; font-weight:700; color:#5B6F68; display:block; margin-bottom:6px;">Consultório e médico da consulta:</label>
+            <select id="sel-medico" style="width:100%; padding:12px; border:1.5px solid #DCE6E1; border-radius:10px; font-size:0.92rem; font-family:inherit; font-weight:600;"></select>
+          </div>
+
+          <button class="btn-chamar" id="btn-chamar-proximo">📢 Chamar próximo paciente</button>
+
+          <div id="lista-fila-ctrl">
+            <div class="vazio-tv" style="padding:20px 0;"><h3>Fila vazia</h3><p>Use "Preencher fila demo" ou inicie atendimentos no sistema médico.</p></div>
+          </div>
+        </div>
+
+        <!-- Última chamada + recentes -->
+        <div class="ctrl-painel">
+          <h2>🔔 Chamadas</h2>
+          <div class="ultima-chamada" id="ultima-chamada">
+            <div class="senha">—</div>
+            <div class="nome">Nenhuma chamada ainda</div>
+            <div class="det">—</div>
+          </div>
+          <button class="btn" id="btn-rechamar" style="width:100%; padding:12px; border:none; border-radius:10px; background:#E6F4EF; color:#0B6E4F; font-weight:800; cursor:pointer; font-size:0.95rem; font-family:inherit; margin-bottom:14px;">🔁 Rechamar último paciente</button>
+
+          <h2 style="margin-top:6px;">📜 Chamadas recentes</h2>
+          <div class="ctrl-recentes" id="lista-recentes-ctrl">
+            <div class="vazio-tv" style="padding:16px 0;"><h3>—</h3></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-ctrl" id="toast-ctrl"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
+  <script>
+    /* ---------- Utilidades ---------- */
+    function toast(msg, tipo) {
+      const t = document.getElementById('toast-ctrl');
+      t.textContent = msg;
+      t.className = 'toast-ctrl aberto' + (tipo === 'erro' ? ' erro' : '');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('aberto'), 3000);
+    }
+
+    function fmtHora(iso) {
+      if (!iso) return '—';
+      return new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    /* ---------- Estado do tipo de chamada ---------- */
+    let tipoChamada = 'triagem'; // 'triagem' | 'consulta'
+    let guicheSelecionado = TV_CONFIG.GUICHE[0];
+    let medicoSelecionado = (TV.MEDICOS && TV.MEDICOS[0]) || { consultorio: '1', nome: 'Dr. Médico' };
+
+    function setTipo(tipo) {
+      tipoChamada = tipo;
+      document.querySelectorAll('#sel-tipo .tipo-btn').forEach(b => {
+        const ativo = b.dataset.tipo === tipo;
+        b.classList.toggle('ativo', ativo);
+        b.style.background = ativo ? '#0B6E4F' : '#fff';
+        b.style.color = ativo ? '#fff' : '#17281F';
+        b.style.borderColor = ativo ? '#0B6E4F' : '#DCE6E1';
+      });
+      document.getElementById('opcoes-triagem').style.display = tipo === 'triagem' ? 'flex' : 'none';
+      document.getElementById('opcoes-consulta').style.display = tipo === 'consulta' ? 'block' : 'none';
+      document.getElementById('c-tipo').textContent = tipo === 'triagem' ? 'Triagem' : 'Consulta';
+      document.getElementById('c-tipo-info').textContent =
+        tipo === 'triagem' ? 'recepção → triagem' : 'triagem → médico';
+    }
+
+    /* ---------- Login ---------- */
+    function logado() { return sessionStorage.getItem('vidamais_tv_operador') === '1'; }
+
+    document.getElementById('btn-login').onclick = () => {
+      const codigo = document.getElementById('codigo').value;
+      if (codigo === TV_CONFIG.CODIGO_CONTROLE) {
+        sessionStorage.setItem('vidamais_tv_operador', '1');
+        document.getElementById('tela-login').style.display = 'none';
+        document.getElementById('tela-painel').style.display = 'block';
+        atualizarTudo();
+      } else {
+        document.getElementById('erro-login').textContent = 'Código incorreto. Tente novamente.';
+      }
+    };
+    document.getElementById('codigo').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('btn-login').click();
+    });
+    document.getElementById('btn-voltar-tv').onclick = () => location.href = 'index.html';
+    document.getElementById('btn-sair').onclick = () => {
+      sessionStorage.removeItem('vidamais_tv_operador');
+      location.reload();
+    };
+    document.getElementById('btn-ver-tv').onclick = () => window.open('index.html', '_blank');
+
+    if (logado()) {
+      document.getElementById('tela-login').style.display = 'none';
+      document.getElementById('tela-painel').style.display = 'block';
+    }
+
+    /* ---------- Seletor de guichê (triagem) ---------- */
+    const selGuiche = document.getElementById('sel-guiche');
+    TV_CONFIG.GUICHE.forEach(g => {
+      const b = document.createElement('button');
+      b.textContent = g;
+      b.style.cssText = 'width:44px; height:44px; border-radius:12px; border:2px solid #DCE6E1; background:#fff; font-weight:800; font-size:1rem; cursor:pointer; font-family:inherit; color:#17281F;';
+      b.onclick = () => {
+        guicheSelecionado = g;
+        selGuiche.querySelectorAll('button').forEach(x => {
+          x.style.background = '#fff'; x.style.color = '#17281F'; x.style.borderColor = '#DCE6E1';
+        });
+        b.style.background = '#0B6E4F'; b.style.color = '#fff'; b.style.borderColor = '#0B6E4F';
+      };
+      selGuiche.appendChild(b);
+    });
+
+    /* ---------- Seletor de consultório + médico (consulta) ---------- */
+    const selMedico = document.getElementById('sel-medico');
+    function preencherMedicos() {
+      (TV.MEDICOS || []).forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.consultorio;
+        opt.textContent = 'Consultório ' + m.consultorio + ' — ' + m.nome + ' (' + m.especialidade + ')';
+        selMedico.appendChild(opt);
+      });
+      selMedico.onchange = () => {
+        const cons = selMedico.value;
+        medicoSelecionado = (TV.MEDICOS || []).find(m => m.consultorio === cons) || medicoSelecionado;
+      };
+    }
+    preencherMedicos();
+
+    /* ---------- Toggle do tipo ---------- */
+    document.querySelectorAll('#sel-tipo .tipo-btn').forEach(b => {
+      b.style.cssText = 'padding:12px; border-radius:10px; border:2px solid #DCE6E1; background:#fff; font-weight:800; font-size:0.95rem; cursor:pointer; font-family:inherit; color:#17281F;';
+      b.onclick = () => setTipo(b.dataset.tipo);
+    });
+    setTipo('triagem');
+
+    /* ---------- Renderização do painel ---------- */
+    async function atualizarTudo() {
+      try {
+        const [fila, recentes] = await Promise.all([TV.getFila(), TV.getChamadasRecentes(10)]);
+        document.getElementById('c-fila').textContent = fila.filter(c => c.status === 'em_fila').length;
+
+        // Última chamada
+        const ultima = recentes[0];
+        if (ultima) {
+          const tipoU = ultima.tipo_chamada || 'triagem';
+          document.getElementById('c-senha').textContent = ultima.senha;
+          document.getElementById('c-info-ultima').textContent =
+            (tipoU === 'consulta'
+              ? 'Consultório ' + (ultima.consultorio || '—') + ' • ' + (ultima.medico_nome || '')
+              : 'Triagem • Guichê ' + (ultima.guiche || '—')) + ' • ' + fmtHora(ultima.chamado_em);
+          document.getElementById('ultima-chamada').innerHTML = `
+            <div class="senha">${ultima.senha}</div>
+            <div class="nome">${ultima.nome_chamado || ultima.nome_paciente || 'Paciente'}</div>
+            <div class="det">${tipoU === 'consulta'
+              ? 'Consultório ' + (ultima.consultorio || '—') + ' • ' + (ultima.medico_nome || '')
+              : 'Triagem • Guichê ' + (ultima.guiche || '—')} • ${fmtHora(ultima.chamado_em)}</div>`;
+        }
+
+        // Fila (controle)
+        const listaEl = document.getElementById('lista-fila-ctrl');
+        const emFila = fila.filter(c => c.status === 'em_fila');
+        if (!emFila.length) {
+          listaEl.innerHTML = '<div class="vazio-tv" style="padding:20px 0;"><h3>Fila vazia</h3><p>Use "Preencher fila demo" ou inicie atendimentos no sistema médico.</p></div>';
+        } else {
+          listaEl.innerHTML = emFila.map(c => `
+            <div class="ctrl-fila-item">
+              <div class="pos">${c.posicao}ª</div>
+              <div class="senha">${c.senha}</div>
+              <div class="nome">${c.nome_paciente || 'Paciente'}</div>
+              <button class="btn-chama" data-id="${c.id}">Chamar</button>
+            </div>`).join('');
+          listaEl.querySelectorAll('.btn-chama').forEach(b => {
+            b.onclick = () => chamar(b.dataset.id);
+          });
+        }
+
+        // Recentes (controle)
+        const recEl = document.getElementById('lista-recentes-ctrl');
+        if (!recentes.length) {
+          recEl.innerHTML = '<div class="vazio-tv" style="padding:16px 0;"><h3>—</h3></div>';
+        } else {
+          recEl.innerHTML = recentes.map(c => {
+            const tipoU = c.tipo_chamada || 'triagem';
+            const destino = tipoU === 'consulta'
+              ? 'Consultório ' + (c.consultorio || '—')
+              : 'Triagem G' + (c.guiche || '—');
+            return `
+            <div class="item-recente">
+              <span class="senha">${c.senha}</span>
+              <span class="nome">${c.nome_chamado || c.nome_paciente || 'Paciente'}</span>
+              <span class="guiche ${tipoU === 'consulta' ? 'guiche-consulta' : ''}">${destino}</span>
+              <span class="hora">${fmtHora(c.chamado_em)}</span>
+            </div>`;
+          }).join('');
+        }
+
+        // Habilita/desabilita botões
+        document.getElementById('btn-chamar-proximo').disabled = !emFila.length;
+        document.getElementById('btn-rechamar').disabled = !ultima;
+      } catch (e) { toast('Erro: ' + e.message, 'erro'); }
+    }
+
+    /* ---------- Chamar (conforme o tipo selecionado) ---------- */
+    async function chamar(id) {
+      try {
+        if (tipoChamada === 'consulta') {
+          await TV.chamarParaConsulta(id, medicoSelecionado.consultorio, medicoSelecionado.nome);
+          toast('Chamado para o consultório ' + medicoSelecionado.consultorio + ' 📢');
+        } else {
+          await TV.chamarConsulta(id, { tipo: 'triagem', guiche: guicheSelecionado });
+          toast('Chamado para a triagem (guichê ' + guicheSelecionado + ') 📢');
+        }
+        atualizarTudo();
+      } catch (e) { toast('Erro: ' + e.message, 'erro'); }
+    }
+
+    document.getElementById('btn-chamar-proximo').onclick = async () => {
+      try {
+        if (tipoChamada === 'consulta') {
+          const proximo = await TV.getProximo();
+          if (!proximo) throw new Error('A fila está vazia');
+          await TV.chamarParaConsulta(proximo.id, medicoSelecionado.consultorio, medicoSelecionado.nome);
+          toast('Próximo paciente chamado para o consultório ' + medicoSelecionado.consultorio + ' 📢');
+        } else {
+          await TV.chamarProximoTriagem(guicheSelecionado);
+          toast('Próximo paciente chamado para a triagem 📢');
+        }
+        atualizarTudo();
+      } catch (e) { toast('Erro: ' + e.message, 'erro'); }
+    };
+
+    document.getElementById('btn-rechamar').onclick = async () => {
+      try {
+        await TV.rechamar();
+        toast('Paciente rechamado 🔁');
+        atualizarTudo();
+      } catch (e) { toast('Erro: ' + e.message, 'erro'); }
+    };
+
+    /* ---------- Demo ---------- */
+    document.getElementById('btn-seed-fila').onclick = () => {
+      TV.seedFila(8);
+      toast('Fila demo preenchida com 8 pacientes 👥');
+      atualizarTudo();
+    };
+    document.getElementById('btn-limpar-fila').onclick = () => {
+      TV.limparFilaDemo();
+      toast('Fila demo limpa 🧹');
+      atualizarTudo();
+    };
+
+    /* Chamadas de TESTE (para ver na TV) */
+    document.getElementById('btn-teste-triagem').onclick = async () => {
+      try {
+        await TV.chamadaTesteTriagem();
+        toast('Chamada de teste: triagem 📢 veja a TV!');
+        atualizarTudo();
+      } catch (e) { toast('Erro: ' + e.message, 'erro'); }
+    };
+    document.getElementById('btn-teste-consulta').onclick = async () => {
+      try {
+        await TV.chamadaTesteConsulta();
+        toast('Chamada de teste: consulta 📢 veja a TV!');
+        atualizarTudo();
+      } catch (e) { toast('Erro: ' + e.message, 'erro'); }
+    };
+
+    document.getElementById('ctrl-unidade').textContent = TV_CONFIG.UNIDADE;
+    document.getElementById('banner-demo').style.display = SUPABASE_CONFIGURADO ? 'none' : 'flex';
+
+    if (logado()) atualizarTudo();
+    setInterval(() => { if (logado()) atualizarTudo(); }, 8000);
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a30940306d6cf254',t:'MTc4NzY0Njc5NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
