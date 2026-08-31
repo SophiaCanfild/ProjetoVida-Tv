@@ -1,10 +1,10 @@
 /* ============================================================
-   VIDA+ TELÃO — Design idêntico à imagem de referência
-   Arquivo: css/tv.css
+   VIDA+ TELÃO — Design final
+   Logo: sem nome.jpg | Sem imagem no banner | Relógio só hora
    ============================================================ */
 
 :root {
-  /* CORES EXATAS DA IMAGEM */
+  /* CORES */
   --azul: #1565C0;          /* Azul principal (nome, títulos) */
   --azul-titulo: #0D4B9E;   /* Azul do título central */
   --azul-claro: #EEF2FB;    /* Fundo do círculo azul (megafone) */
@@ -56,14 +56,21 @@ body {
   justify-content: space-between;
   gap: 20px;
 }
+
 .tv-marca { display: flex; align-items: center; gap: 14px; }
+
+/* LOGO do hospital — imagem "sem nome.jpg" */
 .tv-marca .logo-tv {
-  width: 56px; height: 56px; border-radius: 16px;
-  background: linear-gradient(135deg, var(--azul), var(--verde));
-  display: grid; place-items: center;
-  box-shadow: 0 6px 18px rgba(21, 101, 192, 0.25);
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: contain;
+  background: #FFFFFF;
+  border: 1px solid var(--borda);
+  box-shadow: 0 4px 14px rgba(21, 101, 192, 0.12);
+  flex-shrink: 0;
 }
-.tv-marca .logo-tv svg { width: 30px; height: 30px; }
+
 .tv-marca .nome-sistema { font-size: 1.9rem; font-weight: 900; color: var(--azul); line-height: 1; }
 .tv-marca .nome-unidade { font-size: 1.05rem; color: var(--texto-suave); font-weight: 500; margin-top: 2px; }
 
@@ -76,12 +83,13 @@ body {
   line-height: 1.15;
 }
 
-/* Relógio — SOMENTE hora */
+/* Relógio — SOMENTE hora, canto superior direito */
 .tv-relogio { text-align: right; color: var(--azul); min-width: 130px; }
 .tv-relogio .hora {
-  font-size: 2.4rem; font-weight: 800; line-height: 1;
+  font-size: 2.6rem; font-weight: 800; line-height: 1;
   letter-spacing: 1px; font-variant-numeric: tabular-nums;
 }
+.tv-relogio .data { display: none; }
 
 /* ============ Destaque: banner principal ============ */
 .tv-destaque {
@@ -99,27 +107,15 @@ body {
   overflow: hidden;
 }
 
-/* Imagem logo-onda.png à direita */
-.tv-destaque .imagem-onda {
-  position: absolute;
-  right: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 82%;
-  width: auto;
-  max-width: 42%;
-  object-fit: contain;
-  z-index: 1;
-  pointer-events: none;
-}
 .tv-destaque .aguardando,
-.tv-destaque .chamada { position: relative; z-index: 2; max-width: 55%; }
+.tv-destaque .chamada { position: relative; z-index: 2; max-width: 70%; }
 
-/* Estado aguardando (nome estilo "Maria Gabrielly") */
+/* Estado aguardando */
 .tv-destaque .aguardando { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
 .tv-destaque .aguardando h2 {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 900; color: var(--azul);
+  line-height: 1.1;
 }
 .tv-destaque .aguardando p { color: var(--texto-suave); font-size: 1.2rem; }
 
@@ -130,6 +126,7 @@ body {
   animation: pisca 2.4s infinite;
 }
 @keyframes pisca { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+
 .tv-destaque .senha-chamada {
   font-size: clamp(3rem, 6vw, 5rem);
   font-weight: 900; letter-spacing: 3px;
@@ -268,7 +265,7 @@ body {
 @media (max-width: 900px) {
   .tv-titulo-centro { font-size: 1.5rem; }
   .tv-paineis { grid-template-columns: 1fr; max-height: none; }
-  .tv-destaque .imagem-onda { opacity: 0.3; }
   .tv-destaque .aguardando,
   .tv-destaque .chamada { max-width: 100%; }
+  .tv-marca .logo-tv { width: 52px; height: 52px; }
 }
