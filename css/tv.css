@@ -1,8 +1,3 @@
-Para transformar o seu tema escuro (Dark Mode) no tema claro (Light Mode) exatamente como mostrado na imagem, precisamos redefinir a paleta de cores (variáveis no `:root`), ajustar os gradientes de fundo, mudar o alinhamento do painel principal e suavizar as sombras.
-
-Aqui está o código CSS completo e transformado. Você pode substituir o seu antigo por este:
-
-```css
 /* ============================================================
    VIDA+ TELÃO — Design system (modo TV, tela grande)
    Tema CLARO (Light Mode) baseado na imagem de referência
@@ -235,13 +230,5 @@ body {
 }
 .tv-rodape .icone-user { 
   color: var(--verde); 
-  font-size: 1.4rem;
+  font-size: 1.4rem
 }
-```
-
-### O que foi alterado para ficar idêntico à imagem?
-1. **Cores Base (`:root`):** Todo o escopo Dark (`#061A13`, etc.) foi trocado por tons claros e limpos (`#FFFFFF`, `#F8FAFC`), e os textos agora usam Azul Marinho e Azul Primário.
-2. **Caixa Principal (`.tv-destaque`):** Removi o alinhamento central e alterei para alinhamento à esquerda, igual à área que exibe o nome "Maria Gabrielly". Adicionei fontes muito maiores e um fundo claro.
-3. **Divisão Inferior (`.tv-paineis`):** Alterado de `1.1fr 1.4fr` para `1fr 1fr`, deixando os dois blocos ("Ligações" e "Avisos") simétricos como na foto.
-4. **Ícones Circulares (`.icone-bola`):** Foram criadas classes novas no `.vazio-tv` para fazer aquele círculo azul de fundo pro Megafone e o círculo verde de fundo pro Sino.
-5. **Rodapé (`.tv-rodape`):** Alinhado à esquerda com o texto em azul e espaço para o ícone verde, respeitando o "Prezado paciente, aguarde ser chamado...".
