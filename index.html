@@ -5,854 +5,258 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FFFFFF">
   <title>Telão — Vida+ • Hospital Vida+</title>
-  
-  <style>
-/* ============================================================
-   VIDA+ TELÃO — Design system (modo TV, tela grande)
-   TEMA CLARO INSTITUCIONAL — branco, azul e verde claro sutil
-   ============================================================ */
-
-:root {
-  /* Paleta principal */
-  --azul:         #1565D8;
-  --azul-escuro:  #0B4AA2;
-  --azul-claro:   #4DA3FF;
-  --verde:        #4CAF2E;
-  --verde-vivo:   #6DC72B;
-  --verde-escuro: #3B8C22;
-
-  /* Verdes claros (toques sutis conforme solicitado) */
-  --verde-leve:   #EEF8E9;
-  --verde-leve-2: #F6FCF3;
-  --verde-borda:  #DCEFD2;
-
-  /* Fundos */
-  --fundo-1:  #FFFFFF;
-  --fundo-2:  #F4F8FD;
-  --painel:   #FAFCFF;
-  --painel-2: #F0F5FB;
-
-  /* Textos */
-  --texto:        #123A6B;
-  --texto-suave:  #6B7C93;
-  --texto-escuro: #16232E;
-
-  /* Apoio */
-  --amarelo:  #F2A93B;
-  --vermelho: #E05353;
-
-  --borda:       #E3EDF8;
-  --borda-forte: #D2E2F2;
-
-  --sombra:       0 6px 26px rgba(21, 101, 216, 0.08);
-  --sombra-suave: 0 2px 12px rgba(21, 101, 216, 0.06);
-  --raio: 22px;
-
-  /* Imagem decorativa */
-  --img-onda: url('logo-onda.png');
-
-  --fonte: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', sans-serif;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-html, body { height: 100%; overflow: hidden; }
-
-body {
-  font-family: var(--fonte);
-  background:
-    radial-gradient(820px 460px at 100% 100%, var(--verde-leve) 0%, transparent 62%),
-    radial-gradient(620px 380px at 96% 6%,    var(--verde-leve-2) 0%, transparent 58%),
-    radial-gradient(900px 500px at 0% 0%,     #EAF2FD 0%, transparent 60%),
-    var(--fundo-1);
-  color: var(--texto);
-  min-height: 100vh;
-  display: flex;
-}
-
-/* ============ Layout principal ============ */
-.tv-app {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 18px 26px 12px;
-  gap: 15px;
-  max-height: 100vh;
-}
-
-/* ============ Topo ============ */
-.tv-topo {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 20px;
-  padding: 2px 6px 0;
-}
-
-.tv-marca { display: flex; align-items: center; gap: 12px; }
-
-.tv-marca .logo-tv {
-  width: 58px; height: 58px; border-radius: 16px;
-  background: linear-gradient(135deg, var(--azul) 0%, var(--azul-claro) 45%, var(--verde-vivo) 100%);
-  display: grid; place-items: center;
-  box-shadow: 0 6px 18px rgba(21, 101, 216, 0.22);
-}
-.tv-marca .logo-tv svg { width: 30px; height: 30px; fill: none; stroke: white; stroke-width: 2.2; }
-
-.tv-marca .nome-sistema {
-  font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px;
-  color: var(--azul); line-height: 1;
-}
-.tv-marca .nome-unidade {
-  font-size: 0.96rem; color: var(--texto-suave); font-weight: 500; margin-top: 2px;
-}
-
-/* Título central (pode ser oculto se quiser apenas marca + relógio) */
-.tv-titulo-central {
-  text-align: center;
-  font-size: clamp(1.4rem, 2.3vw, 2.2rem);
-  font-weight: 800;
-  color: var(--azul);
-  line-height: 1.15;
-  letter-spacing: -0.5px;
-}
-
-/* ---- Relógio (canto superior direito — Horário de Brasília) ---- */
-.tv-relogio {
-  text-align: right;
-  background: linear-gradient(135deg, #FFFFFF 0%, var(--verde-leve-2) 100%);
-  border: 1px solid var(--verde-borda);
-  border-radius: 16px;
-  padding: 10px 18px;
-  box-shadow: var(--sombra-suave);
-  min-width: 220px;
-}
-.tv-relogio .hora {
-  font-size: 2.4rem; font-weight: 800; line-height: 1;
-  color: var(--azul); font-variant-numeric: tabular-nums;
-  letter-spacing: 1px;
-}
-.tv-relogio .data {
-  font-size: 0.85rem; color: var(--texto-suave); margin-top: 4px;
-  font-weight: 600; text-transform: capitalize;
-}
-.tv-fuso-brasilia {
-  display: flex; align-items: center; justify-content: flex-end; gap: 6px;
-  font-size: 0.68rem; color: var(--verde-escuro);
-  font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-  margin-top: 3px;
-}
-.tv-fuso-brasilia .bolinha {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--verde-vivo);
-  box-shadow: 0 0 0 3px rgba(109,199,43,0.18);
-  animation: pisca-verde 2s infinite;
-}
-
-@keyframes pisca-verde { 
-  0%,100% { opacity: 1; } 
-  50% { opacity: 0.45; } 
-}
-
-/* Decoração de pontos (canto direito acima/ao lado do relógio) */
-.tv-pontos { 
-  display: none; /* Escondido por padrão, pode ser ativado se quiser */
-  align-items: center; justify-content: flex-end; gap: 6px; 
-  position: absolute; right: 24px; top: 70px;
-}
-.tv-pontos i {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--azul); opacity: 0.32; display: block;
-}
-.tv-pontos i:nth-child(3), 
-.tv-pontos i:nth-child(5) { 
-  width: 11px; height: 11px; opacity: 1; 
-  background: var(--verde-vivo); 
-}
-
-/* ============ Destaque: última chamada ============ */
-.tv-destaque {
-  flex: 1;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  background: linear-gradient(120deg, #FFFFFF 0%, #F7FAFF 52%, var(--verde-leve-2) 100%);
-  border: 1px solid var(--borda);
-  border-right: 1px solid var(--verde-borda);
-  border-radius: var(--raio);
-  box-shadow: var(--sombra);
-  padding: 24px 54px;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Brilhos sutis (azul esquerda, verde direita) */
-.tv-destaque::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(560px 240px at 14% 50%, rgba(21,101,216,0.04), transparent 70%),
-    radial-gradient(420px 220px at 88% 88%, rgba(109,199,43,0.06), transparent 72%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Logo "onda" grande à direita — PUXA logo-onda.png */
-.tv-destaque::after {
-  content: '';
-  position: absolute;
-  right: -30px;
-  bottom: -40px;
-  width: 44%;
-  height: 170%;
-  background: var(--img-onda) right center / contain no-repeat;
-  opacity: 0.92;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Garante que conteúdo fica acima da imagem */
-.tv-destaque > * { 
-  position: relative; 
-  z-index: 1; 
-}
-
-.tv-destaque .rotulo-chamada {
-  font-size: 0.95rem; text-transform: uppercase; letter-spacing: 6px;
-  color: var(--verde); font-weight: 800;
-  animation: pisca-chamada 2.4s infinite;
-}
-@keyframes pisca-chamada { 
-  0%,100% { opacity: 1; transform: scale(1); } 
-  50% { opacity: 0.55; transform: scale(0.98); } 
-}
-
-.tv-destaque .senha-chamada {
-  font-size: clamp(3.5rem, 8vw, 7rem);
-  font-weight: 900; letter-spacing: 4px;
-  color: var(--azul);
-  line-height: 1.05;
-  margin: 8px 0;
-  text-shadow: 0 2px 10px rgba(21,101,216,0.08);
-}
-
-.tv-destaque .nome-chamada {
-  font-size: clamp(2rem, 4.5vw, 3.8rem);
-  font-weight: 800;
-  color: var(--azul);
-  letter-spacing: -0.5px;
-  margin-bottom: 12px;
-  transition: all 0.4s ease;
-}
-
-/* Modo Consulta: nome gigante */
-.tv-destaque.modo-consulta .nome-chamada {
-  font-size: clamp(2.8rem, 6vw, 5rem);
-  color: var(--texto-escuro);
-}
-.tv-destaque.modo-consulta .senha-chamada {
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-  color: var(--texto-suave);
-  letter-spacing: 2px;
-  font-weight: 700;
-  margin: 4px 0 0;
-}
-
-/* Modo Triagem: senha gigante, nome menor */
-.tv-destaque.modo-triagem .nome-chamada {
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-  color: var(--texto-suave);
-  font-weight: 600;
-  margin: 4px 0 8px;
-}
-
-.tv-destaque .guiche-chamada,
-.tv-destaque .destino-box {
-  display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
-  margin-top: 10px;
-}
-
-.tv-destaque .guiche-chamada {
-  font-size: 1.1rem; font-weight: 800;
-  color: #fff;
-  background: linear-gradient(135deg, var(--azul), var(--azul-claro));
-  padding: 10px 28px; border-radius: 40px;
-  box-shadow: 0 4px 14px rgba(21,101,216,0.25);
-}
-
-.tv-destaque .destino-box {
-  background: #EAF2FD;
-  border: 1px solid #CFE2FA;
-  border-radius: 18px;
-  padding: 14px 36px;
-}
-
-/* Destino tipo Triagem (tom verde) */
-.tv-destaque.modo-triagem .destino-box {
-  background: var(--verde-leve);
-  border-color: var(--verde-borda);
-}
-
-.tv-destaque .destino-rotulo {
-  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 3px; 
-  color: var(--azul); font-weight: 800;
-}
-.tv-destaque.modo-triagem .destino-rotulo {
-  color: var(--verde-escuro);
-}
-
-.tv-destaque .destino-valor {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem); 
-  font-weight: 900; color: var(--texto);
-}
-
-.tv-destaque .destino-medico {
-  font-size: clamp(1rem, 1.8vw, 1.35rem); 
-  font-weight: 700; color: var(--texto-suave);
-  margin-top: 2px;
-}
-
-.tv-destaque .pista-chamada {
-  font-size: 0.95rem; color: var(--texto-suave); margin-top: 12px;
-}
-
-/* Estado "aguardando" */
-.tv-destaque .aguardando {
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-}
-.tv-destaque .aguardando .icone-espera {
-  font-size: 4rem; animation: flutua 3s ease-in-out infinite;
-}
-@keyframes flutua { 
-  0%,100% { transform: translateY(0); } 
-  50% { transform: translateY(-12px); } 
-}
-.tv-destaque .aguardando h2 {
-  font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--azul);
-}
-.tv-destaque .aguardando p { 
-  color: var(--texto-suave); font-size: 1.05rem; max-width: 500px; 
-}
-
-/* Animação de entrada da chamada */
-.tv-destaque.animando .anim-item {
-  animation: entra 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards;
-}
-.tv-destaque.animando .rotulo-chamada { animation-delay: 0.05s; }
-.tv-destaque.animando .senha-chamada  { animation-delay: 0.15s; }
-.tv-destaque.animando .nome-chamada   { animation-delay: 0.30s; }
-.tv-destaque.animando .destino-box,
-.tv-destaque.animando .guiche-chamada { animation-delay: 0.45s; }
-.tv-destaque.animando .pista-chamada  { animation-delay: 0.55s; }
-@keyframes entra {
-  from { opacity: 0; transform: translateY(30px) scale(0.97); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ============ Painéis inferiores ============ */
-.tv-paineis {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  min-height: 0;
-  max-height: 38vh;
-}
-
-.tv-painel {
-  background: var(--painel);
-  border: 1px solid var(--borda);
-  border-radius: var(--raio);
-  box-shadow: var(--sombra-suave);
-  padding: 15px 20px;
-  display: flex; flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* Painel de avisos com toque verde claro */
-.tv-painel:last-child {
-  background: linear-gradient(135deg, #FCFEFB 0%, var(--verde-leve) 100%);
-  border-color: var(--verde-borda);
-}
-
-.tv-painel .painel-titulo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 0.98rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 1.5px;
-  color: var(--azul);
-  margin-bottom: 12px;
-  flex-shrink: 0;
-}
-.tv-painel:last-child .painel-titulo { 
-  color: var(--verde-escuro); 
-}
-
-.tv-painel .painel-titulo .contador {
-  background: rgba(21,101,216,0.10); color: var(--azul);
-  border-radius: 30px; padding: 2px 12px; font-size: 0.76rem; font-weight: 800;
-}
-.tv-painel:last-child .painel-titulo .contador {
-  background: rgba(76,175,46,0.14); color: var(--verde-escuro);
-}
-
-.lista-tv { 
-  flex: 1; 
-  overflow-y: auto; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 8px; 
-}
-
-/* Scrollbar personalizada (se necessário) */
-.lista-tv::-webkit-scrollbar { width: 6px; }
-.lista-tv::-webkit-scrollbar-track { background: transparent; }
-.lista-tv::-webkit-scrollbar-thumb { background: var(--borda-forte); border-radius: 3px; }
-
-/* Chamada recente */
-.item-recente {
-  display: flex; align-items: center; gap: 14px;
-  padding: 11px 4px;
-  border-bottom: 1px solid var(--borda);
-  animation: slideIn 0.3s ease;
-}
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-15px); }
-  to { opacity: 1; transform: none; }
-}
-.item-recente:last-child { border-bottom: none; }
-.item-recente .senha {
-  font-weight: 900; font-size: 1.15rem; min-width: 75px; 
-  color: var(--azul); letter-spacing: 0.5px;
-}
-.item-recente .nome { /* Oculto por privacidade, mas estilizado se usado */}
-.item-recente .hora {
-  color: var(--texto-suave); font-size: 0.85rem; 
-  font-variant-numeric: tabular-nums; margin-left: auto;
-}
-.item-recente .guiche {
-  font-size: 0.74rem; font-weight: 800; color: #fff;
-  background: var(--azul); border-radius: 20px; padding: 4px 14px;
-  white-space: nowrap;
-}
-.item-recente .guiche.guiche-consulta { 
-  background: var(--azul);  
-  color: #fff; 
-}
-.item-recente .guiche:not(.guiche-consulta) { 
-  background: var(--verde); 
-  color: #fff; 
-}
-
-/* Ordem dos elementos na linha recente */
-.tv-paineis .item-recente .guiche { order: 2; }
-.tv-paineis .item-recente .hora   { order: 3; }
-
-/* Estado vazio */
-.vazio-tv {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 13px;
-  color: var(--texto-suave); text-align: center;
-  padding: 16px;
-}
-.vazio-tv .icone {
-  width: 84px; height: 84px; border-radius: 50%;
-  display: grid; place-items: center;
-  font-size: 2rem;
-  background: #EDF4FD; color: var(--azul);
-  box-shadow: inset 0 0 0 1px var(--borda);
-}
-.tv-painel:last-child .vazio-tv .icone {
-  background: #EAF7E3; color: var(--verde);
-  box-shadow: inset 0 0 0 1px var(--verde-borda);
-}
-.vazio-tv h3 { 
-  color: var(--texto-escuro); 
-  font-size: 1.02rem; 
-  font-weight: 600; 
-  margin: 0;
-}
-.vazio-tv p  { font-size: 0.9rem; margin: 0; }
-
-/* ============ Aviso Grande (Painel de avisos) ============ */
-.aviso-grande {
-  flex: 1;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  font-size: clamp(1.02rem, 1.8vw, 1.4rem);
-  line-height: 1.55;
-  color: var(--texto-escuro);
-  padding: 8px 20px;
-}
-.aviso-grande.fade { 
-  animation: fadeAvs 0.7s ease; 
-}
-@keyframes fadeAvs {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ============ Rodapé ============ */
-.tv-rodape {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  color: var(--azul); font-size: 1rem; font-weight: 500;
-  padding: 6px 0 2px;
-  flex-shrink: 0;
-}
-.tv-rodape .ponto {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--verde-vivo); 
-  animation: pisca-verde 2s infinite; 
-  flex-shrink: 0;
-}
-
-/* ============ Responsivo ============ */
-@media (max-width: 1200px) {
-  .tv-topo { 
-    grid-template-columns: 1fr auto; 
-    gap: 16px;
-  }
-  .tv-titulo-central { 
-    display: none; 
-  }
-  .tv-relogio { 
-    text-align: right; 
-  }
-  .tv-destaque { 
-    padding: 20px; 
-  }
-  .tv-destaque::after { 
-    opacity: 0.12; 
-  }
-  .tv-paineis { 
-    grid-template-columns: 1fr; 
-    max-height: none; 
-  }
-}
-
-@media (max-width: 768px) {
-  .tv-marca .nome-sistema { font-size: 1.5rem; }
-  .tv-relogio .hora { font-size: 1.8rem; }
-  .tv-app { padding: 12px 16px; }
-}
-  </style>
+  <link rel="stylesheet" href="css/tv.css">
 </head>
-
 <body>
 
-<div class="tv-app">
+  <div class="tv-app">
 
-  <!-- ===== Topo: Marca (esq) | Título (centro) | Relógio (dir) ===== -->
-  <header class="tv-topo">
-    
-    <!-- Marca / Logo -->
-    <div class="tv-marca">
-      <div class="logo-tv">
-        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>
+    <!-- ===== Topo ===== -->
+    <header class="tv-topo">
+      <div class="tv-marca">
+        <div class="logo-tv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <div>
+          <div class="nome-sistema">Vida+</div>
+          <div class="nome-unidade" id="nome-unidade">Hospital</div>
+        </div>
       </div>
-      <div>
-        <div class="nome-sistema">Vida+</div>
-        <div class="nome-unidade" id="nome-unidade">Hospital Vida+</div>
+
+      <div class="tv-titulo-centro">
+        Bem-vindo ao<br>Hospital
       </div>
-    </div>
 
-    <!-- Título Central -->
-    <div class="tv-titulo-central">Bem-vindo ao<br>Hospital</div>
-
-    <!-- Relógio: Canto Superior Direito (Horário de Brasília) -->
-    <div class="tv-canto-direito">
+      <!-- Relógio: SOMENTE a hora -->
       <div class="tv-relogio">
-        <div class="hora" id="relogio-hora">--:--:--</div>
-        <div class="data" id="relogio-data">—</div>
-        <div class="tv-fuso-brasilia">
-          <span class="bolinha"></span> Brasília
+        <div class="hora" id="relogio-hora">--:--</div>
+        <div class="data" id="relogio-data" style="display:none;"></div>
+      </div>
+    </header>
+
+    <!-- ===== Destaque: última chamada ===== -->
+    <section class="tv-destaque" id="destaque">
+      <!-- IMAGEM SOLICITADA -->
+      <img src="logo-onda.png" class="imagem-onda" alt="Vida+ Onda">
+
+      <div class="aguardando" id="aguardando">
+        <h2>Aguardando chamada</h2>
+        <p>Fique atento(a) à sua senha no telão.</p>
+      </div>
+
+      <div class="chamada" id="chamada" style="display:none;">
+        <div class="rotulo-chamada anim-item">🔔 Chamando</div>
+        <div class="senha-chamada anim-item" id="chamada-senha">A000</div>
+        <div class="nome-chamada anim-item" id="chamada-nome">—</div>
+        <div class="destino-box anim-item" id="chamada-destino">
+          <span class="destino-rotulo" id="chamada-destino-rotulo">Destino</span>
+          <span class="destino-valor" id="chamada-destino-valor">—</span>
+          <span class="destino-medico" id="chamada-destino-medico"></span>
+        </div>
+        <div class="pista-chamada anim-item" id="chamada-pista">Por favor, dirija-se ao local indicado</div>
+      </div>
+    </section>
+
+    <!-- ===== Painéis: chamadas recentes + avisos ===== -->
+    <div class="tv-paineis">
+      <div class="tv-painel painel-ligacoes">
+        <div class="painel-titulo">
+          <svg class="icone-titulo" viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h3l4 4V6L6 10H3zm13.5 2a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>
+          <span>Ligações recentes</span>
+        </div>
+        <div class="lista-tv" id="lista-recentes">
+          <div class="vazio-tv">
+            <div class="icone-bola azul">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4h3l4 4V6L6 10H3z"/><path d="M16 8.5a4 4 0 010 7"/><path d="M19 6a7 7 0 010 12"/></svg>
+            </div>
+            <h3>Nenhuma ligação ainda</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="tv-painel painel-avisos">
+        <div class="painel-titulo">
+          <svg class="icone-titulo" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+          <span>Avisos</span>
+        </div>
+        <div class="lista-tv">
+          <div class="aviso-grande" id="aviso-atual">
+            <div class="icone-bola verde">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <span class="traco">—</span>
+          </div>
         </div>
       </div>
     </div>
 
-  </header>
-
-  <!-- ===== Destaque: última chamada ===== -->
-  <section class="tv-destaque" id="destaque">
-    
-    <!-- Estado: Aguardando -->
-    <div class="aguardando" id="aguardando">
-      <div class="icone-espera">🩺</div>
-      <h2>Bem-vindo(a) ao Hospital Vida+</h2>
-      <p>Fique atento(a) à sua senha no telão e no seu celular.</p>
-    </div>
-
-    <!-- Estado: Em chamada -->
-    <div class="chamada" id="chamada" style="display:none;">
-      <div class="rotulo-chamada anim-item">🔔 Chamando</div>
-      
-      <!-- Senha (grande em triagem, pequena em consulta) -->
-      <div class="senha-chamada anim-item" id="chamada-senha">A000</div>
-      
-      <!-- Nome (grande em consulta, pequeno em triagem) -->
-      <div class="nome-chamada anim-item" id="chamada-nome">—</div>
-      
-      <!-- Caixa de destino (Consultório/Triagem) -->
-      <div class="destino-box anim-item" id="chamada-destino">
-        <span class="destino-rotulo" id="chamada-destino-rotulo">Destino</span>
-        <span class="destino-valor" id="chamada-destino-valor">—</span>
-        <span class="destino-medico" id="chamada-destino-medico"></span>
-      </div>
-      
-      <div class="pista-chamada anim-item" id="chamada-pista">
-        Por favor, dirija-se ao local indicado
-      </div>
-    </div>
-
-  </section>
-
-  <!-- ===== Painéis: chamadas recentes + avisos ===== -->
-  <div class="tv-paineis">
-    
-    <!-- Chamadas recentes (sem nome por privacidade) -->
-    <div class="tv-painel">
-      <div class="painel-titulo">
-        <span>📢 Chamadas recentes</span>
-      </div>
-      <div class="lista-tv" id="lista-recentes">
-        <div class="vazio-tv">
-          <div class="icone">📢</div>
-          <h3>Nenhuma chamada ainda</h3>
-        </div>
-      </div>
-    </div>
-
-    <!-- Avisos institucionais -->
-    <div class="tv-painel">
-      <div class="painel-titulo">
-        <span>💬 Avisos</span>
-      </div>
-      <div class="lista-tv">
-        <div class="aviso-grande" id="aviso-atual">—</div>
-      </div>
-    </div>
-
+    <!-- ===== Rodapé ===== -->
+    <footer class="tv-rodape">
+      <svg class="icone-rodape" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.66V19a2 2 0 012-2h6a2 2 0 012 2v1.66"/></svg>
+      <span id="msg-rodape">Prezado paciente, aguarde ser chamado. Em caso de dúvidas, entre em contato com a recepção.</span>
+    </footer>
   </div>
 
-  <!-- ===== Rodapé ===== -->
-  <footer class="tv-rodape">
-    <span class="ponto"></span>
-    <span id="msg-rodape">Prezado(a) paciente: aguarde sua senha ser chamada. Em caso de dúvida, procure a recepção.</span>
-  </footer>
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/relogio.js"></script>
+  <script>
+    /* Som de chamada (WebAudio, sem arquivo externo) */
+    const NotificarTV = {
+      somChamada() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          if (ctx.state === 'suspended') ctx.resume();
+          const notas = [[880, 0], [1174.66, 0.22], [880, 0.44], [1567.98, 0.66]];
+          notas.forEach(([freq, t]) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = freq;
+            g.gain.setValueAtTime(0.0001, ctx.currentTime + t);
+            g.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + t + 0.03);
+            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t + 0.18);
+            o.connect(g).connect(ctx.destination);
+            o.start(ctx.currentTime + t);
+            o.stop(ctx.currentTime + t + 0.25);
+          });
+        } catch (e) {}
+      }
+    };
 
-</div>
+    /* ===== Avisos institucionais (rotativos) ===== */
+    const AVISOS = [
+      'Prezado(a) paciente: quando sua senha for chamada, dirija-se ao guichê indicado.',
+      'Mantenha seu cadastro e telefone atualizados na recepção.',
+      'Em caso de emergência, procure imediatamente a equipe de plantão.',
+      'Seus dados são protegidos pela Lei Geral de Proteção de Dados (LGPD).',
+      'Vacinação em dia: pergunte na recepção sobre as campanhas disponíveis.'
+    ];
+    let idxAviso = 0;
+    let temAviso = false; // enquanto não há aviso, mantém o "—"
 
-<!-- Scripts originais do sistema -->
-<script src="js/config.js"></script>
-<script src="js/db.js"></script>
-<!-- Seu arquivo relogio.js será usado, mas adicionamos garantia de fuso abaixo -->
-
-<script>
-  /* Som de chamada (WebAudio, sem arquivo externo) */
-  const NotificarTV = {
-    somChamada() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        if (ctx.state === 'suspended') ctx.resume();
-        const notas = [[880, 0], [1174.66, 0.22], [880, 0.44], [1567.98, 0.66]];
-        notas.forEach(([freq, t]) => {
-          const o = ctx.createOscillator();
-          const g = ctx.createGain();
-          o.type = 'sine'; o.frequency.value = freq;
-          g.gain.setValueAtTime(0.0001, ctx.currentTime + t);
-          g.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + t + 0.03);
-          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t + 0.18);
-          o.connect(g).connect(ctx.destination);
-          o.start(ctx.currentTime + t);
-          o.stop(ctx.currentTime + t + 0.25);
-        });
-      } catch (e) {}
-    }
-  };
-
-  /* ===== Avisos institucionais (rotativos) ===== */
-  const AVISOS = [
-    'Prezado(a) paciente: quando sua senha for chamada, dirija-se ao guichê indicado.',
-    'Mantenha seu cadastro e telefone atualizados na recepção — assim avisamos você com mais facilidade.',
-    'Em caso de emergência, procure imediatamente a equipe de plantão.',
-    'Seus dados são protegidos pela Lei Geral de Proteção de Dados (LGPD).',
-    'Vacinação em dia: pergunte na recepção sobre as campanhas disponíveis.',
-    'Prevenção salva vidas: lave as mãos com frequência e mantenha a vacinação em dia.'
-  ];
-  let idxAviso = 0;
-
-  function renderizarAviso() {
-    const el = document.getElementById('aviso-atual');
-    el.textContent = AVISOS[idxAviso % AVISOS.length];
-    el.classList.remove('fade');
-    void el.offsetWidth; // reinicia animação
-    el.classList.add('fade');
-    idxAviso++;
-  }
-
-  // Configura unidade
-  document.getElementById('nome-unidade').textContent = TV_CONFIG.UNIDADE || 'Hospital Vida+';
-
-  /* ============================================================
-     RELÓGIO — GARANTE FUSO DE BRASÍLIA
-     
-     Se o arquivo relogio.js já define iniciarRelogio(), usamos ele.
-     Caso contrário, esta função fallback garante o horário correto.
-     ============================================================ */
-  function iniciarRelogio(elHora, elData) {
-    const FUSO_BRASILIA = 'America/Sao_Paulo';
-    
-    const fmtHora = new Intl.DateTimeFormat('pt-BR', {
-      timeZone: FUSO_BRASILIA, 
-      hour: '2-digit', 
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    });
-
-    const fmtData = new Intl.DateTimeFormat('pt-BR', {
-      timeZone: FUSO_BRASILIA, 
-      weekday: 'long', 
-      day: '2-digit', 
-      month: 'long', 
-      year: 'numeric'
-    });
-
-    function tick() {
-      const agora = new Date();
-      if(elHora) elHora.textContent = fmtHora.format(agora);
-      if(elData) elData.textContent = fmtData.format(agora);
+    function renderizarAviso() {
+      if (!temAviso) return; // mantém estado vazio (igual à imagem)
+      const el = document.getElementById('aviso-atual');
+      el.innerHTML = '<div class="aviso-texto">' + AVISOS[idxAviso % AVISOS.length] + '</div>';
+      el.classList.remove('fade');
+      void el.offsetWidth;
+      el.classList.add('fade');
+      idxAviso++;
     }
 
-    tick();
-    setInterval(tick, 1000);
-  }
-
-  // Inicializa o relógio (sobrescreve ou complementa o relogio.js externo)
-  iniciarRelogio(
-    document.getElementById('relogio-hora'),
-    document.getElementById('relogio-data')
-  );
-
-  // Inicializa avisos rotativos
-  renderizarAviso();
-  setInterval(renderizarAviso, 9000);
-
-  /* ---------- Renderização ---------- */
-  let ultimaChamadaId = null;
-
-  function formatarHora(iso) {
-    if (!iso) return '--:--';
-    const d = new Date(iso);
-    // Mostra sempre no fuso de Brasília para consistência
-    return d.toLocaleTimeString('pt-BR', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      timeZone: 'America/Sao_Paulo'
-    });
-  }
-
-  function renderizarDestaque(chamada) {
-    const aguardando = document.getElementById('aguardando');
-    const chamadaEl = document.getElementById('chamada');
-    const destaque = document.getElementById('destaque');
-    
-    if (!chamada) {
-      chamadaEl.style.display = 'none';
-      aguardando.style.display = 'flex';
-      destaque.classList.remove('modo-triagem', 'modo-consulta', 'animando');
-      return;
+    if (typeof TV_CONFIG !== 'undefined' && TV_CONFIG.UNIDADE) {
+      document.getElementById('nome-unidade').textContent = TV_CONFIG.UNIDADE;
     }
-    
-    aguardando.style.display = 'none';
-    chamadaEl.style.display = 'block';
 
-    const tipo = chamada.tipo_chamada || 'triagem';
-    const nome = chamada.nome_chamado || chamada.nome_paciente || 'Paciente';
+    /* ===== Relógio no horário de Brasília — SOMENTE hora ===== */
+    (function iniciarRelogioBrasilia() {
+      const elHora = document.getElementById('relogio-hora');
+      function tick() {
+        elHora.textContent = new Intl.DateTimeFormat('pt-BR', {
+          timeZone: 'America/Sao_Paulo',
+          hour: '2-digit', minute: '2-digit', hour12: false
+        }).format(new Date());
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
 
-    // Limpa e aplica modo visual
-    destaque.classList.remove('modo-triagem', 'modo-consulta');
-    destaque.classList.add(tipo === 'consulta' ? 'modo-consulta' : 'modo-triagem');
+    /* ---------- Renderização ---------- */
+    let ultimaChamadaId = null;
 
-    document.getElementById('chamada-senha').textContent = chamada.senha;
-    document.getElementById('chamada-nome').textContent = nome;
-
-    const rotulo = document.getElementById('chamada-destino-rotulo');
-    const valor = document.getElementById('chamada-destino-valor');
-    const medicoEl = document.getElementById('chamada-destino-medico');
-    const pista = document.getElementById('chamada-pista');
-
-    if (tipo === 'consulta') {
-      rotulo.textContent = 'Consultório';
-      valor.textContent = chamada.consultorio || '—';
-      medicoEl.textContent = chamada.medico_nome || '';
-      pista.textContent = 'Por favor, dirija-se ao consultório indicado';
-    } else {
-      // Triagem: destaque no destino
-      rotulo.textContent = 'Destino';
-      valor.textContent = 'Triagem';
-      medicoEl.textContent = chamada.guiche ? 'Guichê ' + chamada.guiche : '';
-      pista.textContent = 'Por favor, dirija-se à triagem';
+    function formatarHora(iso) {
+      if (!iso) return '--:--';
+      const d = new Date(iso);
+      return d.toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
     }
-  }
 
-  /* Chamadas recentes: SOMENTE senha + destino + hora (sem nome por privacidade) */
-  function renderizarRecentes(recentes) {
-    const el = document.getElementById('lista-recentes');
-    if (!recentes.length) {
-      el.innerHTML = '<div class="vazio-tv"><div class="icone">📢</div><h3>Nenhuma chamada ainda</h3></div>';
-      return;
+    function renderizarDestaque(chamada) {
+      const aguardando = document.getElementById('aguardando');
+      const chamadaEl = document.getElementById('chamada');
+      const destaque = document.getElementById('destaque');
+      if (!chamada) {
+        chamadaEl.style.display = 'none';
+        aguardando.style.display = 'flex';
+        destaque.classList.remove('modo-triagem', 'modo-consulta');
+        return;
+      }
+      aguardando.style.display = 'none';
+      chamadaEl.style.display = 'block';
+
+      const tipo = chamada.tipo_chamada || 'triagem';
+      const nome = chamada.nome_chamado || chamada.nome_paciente || 'Paciente';
+
+      destaque.classList.remove('modo-triagem', 'modo-consulta');
+      destaque.classList.add(tipo === 'consulta' ? 'modo-consulta' : 'modo-triagem');
+
+      document.getElementById('chamada-senha').textContent = chamada.senha;
+      document.getElementById('chamada-nome').textContent = nome;
+
+      const rotulo = document.getElementById('chamada-destino-rotulo');
+      const valor = document.getElementById('chamada-destino-valor');
+      const medicoEl = document.getElementById('chamada-destino-medico');
+      const pista = document.getElementById('chamada-pista');
+
+      if (tipo === 'consulta') {
+        rotulo.textContent = 'Consultório';
+        valor.textContent = chamada.consultorio || '—';
+        medicoEl.textContent = chamada.medico_nome || '';
+        pista.textContent = 'Por favor, dirija-se ao consultório indicado';
+      } else {
+        rotulo.textContent = 'Destino';
+        valor.textContent = 'Triagem';
+        medicoEl.textContent = chamada.guiche ? 'Guichê ' + chamada.guiche : '';
+        pista.textContent = 'Por favor, dirija-se à triagem';
+      }
     }
-    
-    el.innerHTML = recentes.map(c => {
-      const tipo = c.tipo_chamada || 'triagem';
-      const destino = tipo === 'consulta'
-        ? '<span class="guiche guiche-consulta">Consultório ' + (c.consultorio || '—') + '</span>'
-        : '<span class="guiche">Triagem</span>';
-        
-      return `
+
+    function renderizarRecentes(recentes) {
+      const el = document.getElementById('lista-recentes');
+      if (!recentes.length) {
+        el.innerHTML = '<div class="vazio-tv"><div class="icone-bola azul"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4h3l4 4V6L6 10H3z"/><path d="M16 8.5a4 4 0 010 7"/><path d="M19 6a7 7 0 010 12"/></svg></div><h3>Nenhuma ligação ainda</h3></div>';
+        return;
+      }
+      el.innerHTML = recentes.map(c => {
+        const tipo = c.tipo_chamada || 'triagem';
+        const destino = tipo === 'consulta'
+          ? '<span class="guiche guiche-consulta">Consultório ' + (c.consultorio || '—') + '</span>'
+          : '<span class="guiche">Triagem</span>';
+        return `
         <div class="item-recente">
           <span class="senha">${c.senha}</span>
           ${destino}
           <span class="hora">${formatarHora(c.chamado_em)}</span>
         </div>`;
-    }).join('');
-  }
-
-  /* ---------- Atualização periódica ---------- */
-  async function atualizar() {
-    try {
-      const recentes = await TV.getChamadasRecentes();
-      renderizarRecentes(recentes);
-
-      const ultima = recentes[0] || null;
-      const destaque = document.getElementById('destaque');
-
-      if (ultima && ultima.id !== ultimaChamadaId) {
-        // Nova chamada → anima o destaque
-        ultimaChamadaId = ultima.id;
-        renderizarDestaque(ultima);
-        
-        // Reinicia animação
-        destaque.classList.remove('animando');
-        void destaque.offsetWidth; // força reflow
-        destaque.classList.add('animando');
-        
-        NotificarTV.somChamada();
-      } else {
-        renderizarDestaque(ultima);
-      }
-    } catch (e) {
-      console.error(e);
+      }).join('');
     }
-  }
 
-  // Primeira carga
-  atualizar();
-  // Atualiza a cada 5 segundos
-  setInterval(atualizar, 5000);
+    async function atualizar() {
+      try {
+        const recentes = await TV.getChamadasRecentes();
+        renderizarRecentes(recentes);
 
-</script>
+        const ultima = recentes[0] || null;
+        const destaque = document.getElementById('destaque');
+
+        if (ultima && ultima.id !== ultimaChamadaId) {
+          ultimaChamadaId = ultima.id;
+          renderizarDestaque(ultima);
+          destaque.classList.remove('animando');
+          void destaque.offsetWidth;
+          destaque.classList.add('animando');
+          NotificarTV.somChamada();
+        } else {
+          renderizarDestaque(ultima);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    atualizar();
+    setInterval(atualizar, 5000);
+    setInterval(renderizarAviso, 9000);
+  </script>
 
 </body>
 </html>

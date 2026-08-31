@@ -1,28 +1,29 @@
 /* ============================================================
-   VIDA+ TELÃO — Design System (Modo Claro / Light Mode)
+   VIDA+ TELÃO — Design idêntico à imagem de referência
    Arquivo: css/tv.css
    ============================================================ */
 
 :root {
-  --azul-marinho: #003B73;
-  --azul-primario: #0056B3;
-  --azul-claro: #F0F6FF;
+  /* CORES EXATAS DA IMAGEM */
+  --azul: #1565C0;          /* Azul principal (nome, títulos) */
+  --azul-titulo: #0D4B9E;   /* Azul do título central */
+  --azul-claro: #EEF2FB;    /* Fundo do círculo azul (megafone) */
+  --azul-bg: #F7F9FE;       /* Fundo do painel esquerdo */
 
-  --verde: #12C98A;
-  --verde-vivo: #0BA876;
-  --verde-escuro: #0B6E4F;
-  --verde-claro: #E8F8F0;
+  --verde: #5FA82F;         /* Verde (avisos, ícone rodapé) */
+  --verde-escuro: #4C8C25;
+  --verde-claro: #E8F5E9;   /* Fundo do círculo verde (sino) */
+  --verde-bg: #F6FBF6;      /* Fundo do painel direito */
 
-  --fundo-principal: #FFFFFF;
-  --painel: #FFFFFF;
-  --borda: rgba(0, 59, 115, 0.08);
-  --texto: #003B73;
-  --texto-suave: #4A6582;
-  --amarelo: #FFC107;
-  --vermelho: #FF4D4D;
+  --fundo: #FFFFFF;
+  --card: #F4F6FB;          /* Fundo do banner principal */
+  --borda: #E6EBF2;
+  --texto: #1565C0;
+  --texto-suave: #6B7280;
+  --texto-escuro: #374151;
 
-  --sombra: 0 8px 30px rgba(0, 59, 115, 0.06);
-  --raio: 24px;
+  --sombra: 0 4px 20px rgba(21, 101, 192, 0.05);
+  --raio: 22px;
   --fonte: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', sans-serif;
 }
 
@@ -32,8 +33,7 @@ html, body { height: 100%; overflow: hidden; }
 
 body {
   font-family: var(--fonte);
-  /* Fundo branco com leve toque de verde claro */
-  background: radial-gradient(circle at top right, var(--verde-claro) 0%, var(--fundo-principal) 55%);
+  background: var(--fundo);
   color: var(--texto);
   min-height: 100vh;
   display: flex;
@@ -44,8 +44,8 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 24px 32px;
-  gap: 20px;
+  padding: 22px 34px;
+  gap: 18px;
   max-height: 100vh;
 }
 
@@ -55,43 +55,41 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 0 10px;
 }
 .tv-marca { display: flex; align-items: center; gap: 14px; }
 .tv-marca .logo-tv {
-  width: 54px; height: 54px; border-radius: 15px;
-  background: linear-gradient(135deg, var(--azul-primario), var(--verde));
+  width: 56px; height: 56px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--azul), var(--verde));
   display: grid; place-items: center;
-  box-shadow: 0 6px 18px rgba(18, 201, 138, 0.25);
+  box-shadow: 0 6px 18px rgba(21, 101, 192, 0.25);
 }
 .tv-marca .logo-tv svg { width: 30px; height: 30px; }
-.tv-marca .nome-sistema { font-size: 1.6rem; font-weight: 900; color: var(--azul-primario); line-height: 1; }
-.tv-marca .nome-unidade { font-size: 1rem; color: var(--texto-suave); font-weight: 500; margin-top: 2px; }
+.tv-marca .nome-sistema { font-size: 1.9rem; font-weight: 900; color: var(--azul); line-height: 1; }
+.tv-marca .nome-unidade { font-size: 1.05rem; color: var(--texto-suave); font-weight: 500; margin-top: 2px; }
 
 /* Título central */
 .tv-titulo-centro {
   text-align: center;
-  font-size: 1.9rem;
+  font-size: 2.1rem;
   font-weight: 800;
-  color: var(--azul-primario);
+  color: var(--azul-titulo);
   line-height: 1.15;
 }
 
-/* Relógio (canto superior direito) */
-.tv-relogio { text-align: right; color: var(--azul-primario); min-width: 160px; }
+/* Relógio — SOMENTE hora */
+.tv-relogio { text-align: right; color: var(--azul); min-width: 130px; }
 .tv-relogio .hora {
   font-size: 2.4rem; font-weight: 800; line-height: 1;
   letter-spacing: 1px; font-variant-numeric: tabular-nums;
 }
-.tv-relogio .data { font-size: 1rem; color: var(--texto-suave); font-weight: 600; margin-top: 4px; }
 
-/* ============ Destaque: última chamada ============ */
+/* ============ Destaque: banner principal ============ */
 .tv-destaque {
   flex: 1;
   display: flex; flex-direction: column;
   align-items: flex-start; justify-content: center;
   text-align: left;
-  background: linear-gradient(135deg, #FFFFFF 0%, #F4FAF7 100%);
+  background: var(--card);
   border: 1px solid var(--borda);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
@@ -104,42 +102,43 @@ body {
 /* Imagem logo-onda.png à direita */
 .tv-destaque .imagem-onda {
   position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 45%;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 82%;
+  width: auto;
+  max-width: 42%;
   object-fit: contain;
-  object-position: right center;
   z-index: 1;
   pointer-events: none;
 }
 .tv-destaque .aguardando,
 .tv-destaque .chamada { position: relative; z-index: 2; max-width: 55%; }
 
-/* Estado aguardando */
-.tv-destaque .aguardando { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.tv-destaque .aguardando .icone-espera { font-size: 3.5rem; animation: flutua 3s ease-in-out infinite; }
-@keyframes flutua { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-.tv-destaque .aguardando h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; color: var(--azul-marinho); }
+/* Estado aguardando (nome estilo "Maria Gabrielly") */
+.tv-destaque .aguardando { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.tv-destaque .aguardando h2 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900; color: var(--azul);
+}
 .tv-destaque .aguardando p { color: var(--texto-suave); font-size: 1.2rem; }
 
-/* Rótulo e chamada */
+/* Chamada */
 .tv-destaque .rotulo-chamada {
   font-size: 1rem; text-transform: uppercase; letter-spacing: 5px;
-  color: var(--verde-vivo); font-weight: 800;
+  color: var(--verde); font-weight: 800;
   animation: pisca 2.4s infinite;
 }
 @keyframes pisca { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
 .tv-destaque .senha-chamada {
-  font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 900; letter-spacing: 4px;
-  color: var(--azul-primario);
-  line-height: 1.05;
-  margin: 6px 0;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900; letter-spacing: 3px;
+  color: var(--azul);
+  line-height: 1.05; margin: 6px 0;
 }
 .tv-destaque .nome-chamada {
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 800; color: var(--azul-marinho);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900; color: var(--azul);
   margin-bottom: 10px;
 }
 .tv-destaque .pista-chamada { font-size: 1rem; color: var(--texto-suave); margin-top: 12px; }
@@ -148,36 +147,31 @@ body {
 .tv-destaque .destino-box {
   display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px;
   background: var(--azul-claro);
-  border: 1px solid rgba(0,86,179,0.15);
+  border: 1px solid rgba(21,101,192,0.15);
   border-radius: 18px;
   padding: 12px 30px;
   margin-top: 10px;
 }
 .tv-destaque .destino-box .destino-rotulo {
-  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--azul-primario); font-weight: 700;
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--azul); font-weight: 700;
 }
 .tv-destaque .destino-box .destino-valor {
-  font-size: clamp(1.8rem, 3.6vw, 2.8rem); font-weight: 900; color: var(--azul-marinho);
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem); font-weight: 900; color: var(--azul-titulo);
 }
 .tv-destaque .destino-box .destino-medico {
   font-size: clamp(1rem, 1.8vw, 1.4rem); font-weight: 700; color: var(--texto-suave);
 }
 
-/* Modo consulta: nome GRANDE */
+/* Modo consulta / triagem */
 .tv-destaque.modo-consulta .senha-chamada {
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  letter-spacing: 3px; color: var(--texto-suave);
-  margin: 4px 0 0;
+  font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: 2px; color: var(--texto-suave); margin: 4px 0 0;
 }
-.tv-destaque.modo-consulta .nome-chamada {
-  font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900; color: var(--azul-marinho); margin: 8px 0;
-}
-/* Modo triagem */
+.tv-destaque.modo-consulta .nome-chamada { font-size: clamp(2.5rem, 5vw, 4rem); }
 .tv-destaque.modo-triagem .nome-chamada {
   font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 600; color: var(--texto-suave); margin: 2px 0 8px;
 }
 .tv-destaque.modo-triagem .destino-box {
-  background: var(--verde-claro); border-color: rgba(18,201,138,0.25);
+  background: var(--verde-claro); border-color: rgba(95,168,47,0.2);
 }
 .tv-destaque.modo-triagem .destino-box .destino-rotulo { color: var(--verde-escuro); }
 
@@ -198,61 +192,50 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   min-height: 0;
-  max-height: 38vh;
+  max-height: 40vh;
 }
 .tv-painel {
-  background: var(--painel);
   border: 1px solid var(--borda);
   border-radius: var(--raio);
-  padding: 24px;
+  padding: 24px 28px;
   display: flex; flex-direction: column;
   box-shadow: var(--sombra);
   min-height: 0;
 }
+.painel-ligacoes { background: var(--azul-bg); }
+.painel-avisos { background: var(--verde-bg); }
+
 .tv-painel .painel-titulo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 1.05rem; font-weight: 800;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 1.1rem; font-weight: 800;
   text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
-/* Primeiro painel (recentes) título azul, segundo (avisos) verde */
-.tv-paineis .tv-painel:nth-child(1) .painel-titulo { color: var(--azul-primario); }
-.tv-paineis .tv-painel:nth-child(2) .painel-titulo { color: var(--verde); }
+.painel-titulo .icone-titulo { width: 26px; height: 26px; flex-shrink: 0; }
+.painel-ligacoes .painel-titulo { color: var(--azul); }
+.painel-avisos .painel-titulo { color: var(--verde); }
 
 .lista-tv { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
 
-/* Chamada recente */
-.item-recente {
-  display: flex; align-items: center; gap: 14px;
-  padding: 10px 4px;
-  border-bottom: 1px solid var(--borda);
+/* Estado vazio (círculos com ícone) */
+.vazio-tv, .aviso-grande {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  color: var(--texto-suave); text-align: center;
 }
-.item-recente:last-child { border-bottom: none; }
-.item-recente .senha { font-weight: 800; font-size: 1.15rem; min-width: 80px; color: var(--azul-primario); }
-.item-recente .hora { color: var(--texto-suave); font-size: 0.95rem; font-variant-numeric: tabular-nums; margin-left: auto; }
-.item-recente .guiche { font-size: 0.8rem; font-weight: 700; color: var(--verde-escuro); background: var(--verde-claro); border-radius: 20px; padding: 4px 12px; }
-.item-recente .guiche.guiche-consulta { background: var(--azul-claro); color: var(--azul-primario); }
-
-/* Vazio (ícones em bolinha) */
-.vazio-tv { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--texto-suave); text-align: center; }
-.vazio-tv .icone {
-  width: 80px; height: 80px; border-radius: 50%;
-  display: grid; place-items: center; font-size: 2.2rem;
+.icone-bola {
+  width: 90px; height: 90px; border-radius: 50%;
+  display: grid; place-items: center;
 }
-.tv-paineis .tv-painel:nth-child(1) .vazio-tv .icone { background: var(--azul-claro); }
-.tv-paineis .tv-painel:nth-child(2) .vazio-tv .icone { background: var(--verde-claro); }
-.vazio-tv h3 { color: var(--texto); font-size: 1.1rem; font-weight: 600; }
+.icone-bola svg { width: 42px; height: 42px; }
+.icone-bola.azul { background: var(--azul-claro); color: var(--azul); }
+.icone-bola.verde { background: var(--verde-claro); color: var(--verde); }
+.vazio-tv h3 { color: var(--texto-escuro); font-size: 1.15rem; font-weight: 500; }
 
-/* Avisos */
-.aviso-grande {
-  flex: 1;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  font-size: clamp(1.15rem, 2vw, 1.6rem);
-  line-height: 1.55;
-  color: var(--texto);
-  padding: 12px 24px;
-  font-weight: 500;
+.aviso-grande .traco { font-size: 2rem; color: var(--verde); font-weight: 700; line-height: 0.5; }
+.aviso-grande .aviso-texto {
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.5; color: var(--texto-escuro); font-weight: 500;
 }
 .aviso-grande.fade { animation: fade-aviso 0.7s ease; }
 @keyframes fade-aviso {
@@ -260,20 +243,32 @@ body {
   to { opacity: 1; transform: none; }
 }
 
+/* Chamada recente (quando houver) */
+.item-recente {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--borda);
+}
+.item-recente:last-child { border-bottom: none; }
+.item-recente .senha { font-weight: 800; font-size: 1.15rem; min-width: 80px; color: var(--azul); }
+.item-recente .hora { color: var(--texto-suave); font-size: 0.95rem; font-variant-numeric: tabular-nums; margin-left: auto; }
+.item-recente .guiche { font-size: 0.8rem; font-weight: 700; color: var(--verde-escuro); background: var(--verde-claro); border-radius: 20px; padding: 4px 12px; }
+.item-recente .guiche.guiche-consulta { background: var(--azul-claro); color: var(--azul); }
+
 /* ============ Rodapé ============ */
 .tv-rodape {
   display: flex; align-items: center; justify-content: flex-start; gap: 12px;
-  color: var(--azul-primario);
-  font-size: 1.05rem; font-weight: 600;
-  padding: 6px 20px;
+  color: var(--azul);
+  font-size: 1.1rem; font-weight: 500;
+  padding: 4px 10px;
 }
-.tv-rodape .ponto { width: 10px; height: 10px; border-radius: 50%; background: var(--verde); animation: pisca 2s infinite; flex-shrink: 0; }
+.tv-rodape .icone-rodape { width: 30px; height: 30px; color: var(--verde); flex-shrink: 0; }
 
 /* ============ Responsividade ============ */
 @media (max-width: 900px) {
-  .tv-titulo-centro { font-size: 1.4rem; }
+  .tv-titulo-centro { font-size: 1.5rem; }
   .tv-paineis { grid-template-columns: 1fr; max-height: none; }
-  .tv-destaque .imagem-onda { opacity: 0.25; width: 60%; }
+  .tv-destaque .imagem-onda { opacity: 0.3; }
   .tv-destaque .aguardando,
   .tv-destaque .chamada { max-width: 100%; }
 }
